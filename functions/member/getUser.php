@@ -13,7 +13,4 @@ $user = $result->fetch_assoc();
 $avatar = $user['avatar'];
 $userID = $user['id'];
 
-
-
-
 ?>

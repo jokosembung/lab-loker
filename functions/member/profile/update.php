@@ -9,6 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 $fullname = $_POST["fullname"];
 $title = $_POST["title"];
 
+if(strlen($fullname) < 1 || strlen($fullname) > 50){
+    $_SESSION['error_message'] = "Minimal 1 karakter maksimal 50";
+    echo "<script>window.location.href = '{$menuProfile}/profile/index.php';</script>";
+    exit;
+}
+
+if(strlen($title) < 1 || strlen($title) > 50){
+    $_SESSION['error_message'] = "Minimal 1 karakter maksimal 50";
+    echo "<script>window.location.href = '{$menuProfile}/profile/index.php';</script>";
+    exit;
+}
+
 $fullname = $conn->real_escape_string($fullname);
 $title = $conn->real_escape_string($title);
 
@@ -57,11 +69,12 @@ if($fileName){
 }
 
 $sql = "UPDATE users 
-        set fullname = '$fullname', avatar = '$avatar', title= '$title' 
-        WHERE id = '$userID'";
+        set fullname = '$fullname', avatar = '$avatar', title= ? 
+        WHERE id = ?";
 
-
-if ($conn->query($sql) === FALSE) {
+$updateStmt = $conn->prepare($sql);
+$updateStmt->bind_param("sssi",$fullname, $avatar, $title, $userID);
+if ($updateStmt->execute()) {
     $_SESSION['error_message'] = "Error: " . $sql . "<br>" . $conn->error;
 }
 

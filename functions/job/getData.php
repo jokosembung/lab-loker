@@ -13,9 +13,11 @@ if ($result->num_rows == 0) {
 $id = $_GET['id'];
 
 $getData = "SELECT * FROM jobs 
-            WHERE id = $id";
-
-$resultJob = $conn->query($getData);
-$job = $resultJob->fetch_assoc();
+            WHERE id = ?";
+$stmt = $conn->prepare($getData);
+$stmt->bind_param("i", $id); 
+$stmt->execute();
+$stmt->get_result();
+$job = $stmt->fetch_assoc();
 ?>
 

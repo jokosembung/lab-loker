@@ -8,11 +8,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 $skill = $_POST["skill"];
+if(strlen($skill) < 1 || strlen($skill) > 50){
+    $_SESSION['error_message'] = "Minimal 1 karakter maksimal 50";
+    echo "<script>window.location.href = '{$menuProfileAddSkill}';</script>";
+    exit;
+}
 
-$sql = "INSERT INTO skills (user_id, skill) VALUES ('$userID', '$skill')";
+$skill = $conn->real_escape_string($skill);
+$sql = "INSERT INTO skills (user_id, skill) VALUES (?, ?)";
 
+$stmtUpdate = $conn->prepare($sql);
+$stmtUpdate->bind_param("is", $userID, $skill);
 
-if ($conn->query($sql) === FALSE) {
+if (!$stmtUpdate->execute()) {
     $_SESSION['error_message'] = "Error: " . $sql . "<br>" . $conn->error;
     echo "<script>window.location.href = '{$menuProfileAddSkill}';</script>";
     exit;
