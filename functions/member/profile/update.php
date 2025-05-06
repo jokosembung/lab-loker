@@ -48,6 +48,10 @@ if ($fileName) {
         $_SESSION['error_message'] = "File dengan ekstensi .$fileExt tidak diizinkan untuk di-upload.";
     }
 
+    if ($fileSize > 1000){
+        $_SESSION['error_message'] = "File maksimal 1MB.";
+    }
+
     // Periksa jika ada error dalam pengunggahan file
     if ($fileError !== UPLOAD_ERR_OK) {
         $_SESSION['error_message'] .= "Terjadi kesalahan saat meng-upload file.";
