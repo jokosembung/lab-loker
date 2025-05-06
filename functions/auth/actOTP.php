@@ -62,6 +62,12 @@ if($result->num_rows > 0){
     $updateStmt = $conn->prepare($updateIsActive);
     $updateStmt->bind_param("s", $otp);
     $updateStmt->execute();
+}else{
+    $_SESSION['error_message'] = "OTP tidak valid";
+    $_SESSION['otp_'.$ipAddr.'_'.$phoneNumber]++;
+    $_SESSION['lastotptime_'.$ipAddr.'_'.$phoneNumber] = time();
+    echo "<script>window.location.href = '{$menuAuth}/login.php';</script>";
+    exit;
 }
 
 //otp sudah pernah active tidak boleh
