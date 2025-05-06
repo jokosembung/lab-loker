@@ -16,15 +16,14 @@ if (!$id || !is_numeric($id)) {
     exit;
 }
 
-$skill = $conn->real_escape_string($skill);
+$skill = $conn->real_escape_string(strip_tags($skill));
 
 $sql = "UPDATE skills set skill = ? WHERE id = ? AND user_id= ?";
 
 $stmtUpdate = $conn->prepare($sql);
 $stmtUpdate->bind_param("sii", $skill, $id, $userID);
-$stmtUpdate->execute();
 
-if (!$stmt->execute()) {
+if (!$stmtUpdate->execute()) {
     $_SESSION['error_message_skill'] = "Error: " . $sql . "<br>" . $conn->error;
     echo "<script>window.location.href = '{$menuProfile}/profile';</script>";
     exit;

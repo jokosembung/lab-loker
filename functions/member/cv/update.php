@@ -55,16 +55,22 @@ if ($fileName) {
 
     if ($result->num_rows > 0) {
         // Data ditemukan, lakukan update
-        $update_query = "UPDATE curriculum_vitaes SET filename = '$newFileName' WHERE user_id = $userID";
-        if ($conn->query($update_query) === TRUE) {
+        $update_query = "UPDATE curriculum_vitaes SET filename = ? WHERE user_id = ?";
+        
+        $stmtUpdate = $conn->prepare($update_query);
+        $stmtUpdate->bind_param("si", $newFileName, $userID);
+        if ($stmtUpdate->execute()) {
             echo "Data CV berhasil diperbarui.";
         } else {
             $_SESSION['error_message'] .= "Error updating record: " . $conn->error;
         }
     } else {
         // Data tidak ditemukan, lakukan insert
-        $insert_query = "INSERT INTO curriculum_vitaes (user_id, filename) VALUES ($userID, '$newFileName')";
-        if ($conn->query($insert_query) === TRUE) {
+        $insert_query = "INSERT INTO curriculum_vitaes (user_id, filename) VALUES (?, ?)";
+        $stmtUpdate = $conn->prepare($update_query);
+        $stmtUpdate->bind_param("ss", $userID, $newFileName);
+        if (!$stmtUpdate->execute()) {
+        
             echo "Data CV berhasil ditambahkan.";
         } else {
             $_SESSION['error_message'] .= "Error inserting record: " . $conn->error;

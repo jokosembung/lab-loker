@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 $about = $_POST["about"];
 $userID = $user['id'];
-$about = $conn->real_escape_string($about);
+$about = $conn->real_escape_string(strip_tags($about));
 
 $sql = "UPDATE users set about = '$about' WHERE id = $userID";
 

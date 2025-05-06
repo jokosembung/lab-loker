@@ -14,7 +14,7 @@ if(strlen($skill) < 1 || strlen($skill) > 50){
     exit;
 }
 
-$skill = $conn->real_escape_string($skill);
+$skill = $conn->real_escape_string(strip_tags($skill));
 $sql = "INSERT INTO skills (user_id, skill) VALUES (?, ?)";
 
 $stmtUpdate = $conn->prepare($sql);
