@@ -69,7 +69,7 @@ if ($fileName) {
         $insert_query = "INSERT INTO curriculum_vitaes (user_id, filename) VALUES (?, ?)";
         $stmtUpdate = $conn->prepare($update_query);
         $stmtUpdate->bind_param("ss", $userID, $newFileName);
-        if (!$stmtUpdate->execute()) {
+        if ($stmtUpdate->execute()) {
         
             echo "Data CV berhasil ditambahkan.";
         } else {
