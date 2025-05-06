@@ -69,12 +69,12 @@ if($fileName){
 }
 
 $sql = "UPDATE users 
-        set fullname = '$fullname', avatar = '$avatar', title= ? 
+        set fullname = ?, avatar = ?, title= ? 
         WHERE id = ?";
 
 $updateStmt = $conn->prepare($sql);
 $updateStmt->bind_param("sssi",$fullname, $avatar, $title, $userID);
-if ($updateStmt->execute()) {
+if (!$updateStmt->execute()) {
     $_SESSION['error_message'] = "Error: " . $sql . "<br>" . $conn->error;
 }
 

@@ -17,7 +17,7 @@ $getData = "SELECT * FROM jobs
 $stmt = $conn->prepare($getData);
 $stmt->bind_param("i", $id); 
 $stmt->execute();
-$stmt->get_result();
-$job = $stmt->fetch_assoc();
+$result = $stmt->get_result();
+$job = $result->fetch_assoc();
 ?>
 
